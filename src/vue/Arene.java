@@ -21,6 +21,17 @@ public class Arene extends JFrame implements Global {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtSaisie;
+	
+	private JPanel jpnMurs;
+	
+	public JPanel getJpnMurs() {
+		return this.jpnMurs;
+	}
+	
+	public void setJpnMurs(JPanel jpnMurs) {
+		this.jpnMurs.add(jpnMurs);
+		this.jpnMurs.repaint();
+	}
 
 	/**
 	 * Create the frame.
@@ -34,6 +45,12 @@ public class Arene extends JFrame implements Global {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		jpnMurs = new JPanel();
+		jpnMurs.setBounds(0, 0, LARGEURARENE, HAUTEURARENE);
+		jpnMurs.setOpaque(false);
+		jpnMurs.setLayout(null);
+		contentPane.add(jpnMurs);
 		
 		JLabel lblFond = new JLabel("");
 		lblFond.setBounds(0, 0, 800, 600);
@@ -55,5 +72,10 @@ public class Arene extends JFrame implements Global {
 		JTextArea txtChat = new JTextArea();
 		jspChat.setViewportView(txtChat);
 
+	}
+	
+	public void ajoutMurs(Object mur) {
+		jpnMurs.add((JLabel)mur);
+		jpnMurs.repaint();
 	}
 }

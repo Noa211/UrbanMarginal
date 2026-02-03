@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import controleur.Controle;
 import outils.connexion.Connection;
 import controleur.Global;
+import modele.Mur;
 
 /**
  * Gestion du jeu côté serveur
@@ -39,6 +40,7 @@ public class JeuServeur extends Jeu implements Global {
 		
 		switch(message[0]) {
 			case PSEUDO:
+				controle.evenementJeuServeur(AJOUTPANELMURS, connection);
 				String pseudo = message[1];
 				Integer numPerso = Integer.parseInt(message[2]);
 				this.lesJoueurs.get(connection).initPerso(pseudo, numPerso);
@@ -60,6 +62,10 @@ public class JeuServeur extends Jeu implements Global {
 	 * Génération des murs
 	 */
 	public void constructionMurs() {
+		for (int i = 0; i < NBMURS; i++) {
+			this.lesMurs.add(new Mur());
+			this.controle.evenementJeuServeur(AJOUTMUR, lesMurs.get(lesMurs.size()-1).getjLabel());
+		}
 	}
 	
 }

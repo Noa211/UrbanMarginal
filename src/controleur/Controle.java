@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.swing.JPanel;
+
 import modele.Jeu;
 import modele.JeuClient;
 import modele.JeuServeur;
@@ -40,9 +42,10 @@ public class Controle implements AsyncResponse, Global {
 		
 		if(info == SERVEUR) {
 			this.frmArene = new Arene();
+			this.leJeu = new JeuServeur(this);
+			((JeuServeur)this.leJeu).constructionMurs();
 			this.frmArene.setVisible(true);
 			ServeurSocket serveur = new ServeurSocket(this, 6666);
-			this.leJeu = new JeuServeur(this);
 			this.frmEntreeJeu.dispose();
 		} else {
 			ClientSocket client = new ClientSocket(this, info, PORT);
@@ -84,6 +87,20 @@ public class Controle implements AsyncResponse, Global {
 	
 	public void envoi(Connection connection, Object objet) {
 		connection.envoi(objet);
+	}
+	
+	public void evenementJeuServeur(String ordre, Object info) {
+		if (ordre == AJOUTMUR) {
+			frmArene.ajoutMurs(info);
+		} else if (ordre == AJOUTPANELMURS) {
+			this.leJeu.envoi((Connection)info, this.frmArene.getJpnMurs());
+		}
+	}
+	
+	public void evenementJeuClient(String ordre, Object info) {
+		if (ordre == AJOUTPANELMURS) {
+			this.frmArene.setJpnMurs((JPanel)info);
+		}
 	}
 
 }
