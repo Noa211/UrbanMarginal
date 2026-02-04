@@ -32,6 +32,16 @@ public class Arene extends JFrame implements Global {
 		this.jpnMurs.add(jpnMurs);
 		this.jpnMurs.repaint();
 	}
+	
+	private JPanel jpnJeu;
+	public JPanel getJpnJeu() {
+		return this.jpnJeu;
+	}
+	public void setJpnJeu(JPanel jpnJeu) {
+		this.jpnJeu.removeAll();
+		this.jpnJeu.add(jpnJeu);
+		this.jpnJeu.repaint();
+	}
 
 	/**
 	 * Create the frame.
@@ -45,6 +55,12 @@ public class Arene extends JFrame implements Global {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		jpnJeu = new JPanel();
+		jpnJeu.setBounds(0, 0, LARGEURARENE, HAUTEURARENE);
+		jpnJeu.setOpaque(false);
+		jpnJeu.setLayout(null);
+		contentPane.add(jpnJeu);
 		
 		jpnMurs = new JPanel();
 		jpnMurs.setBounds(0, 0, LARGEURARENE, HAUTEURARENE);
@@ -77,5 +93,10 @@ public class Arene extends JFrame implements Global {
 	public void ajoutMurs(Object mur) {
 		jpnMurs.add((JLabel)mur);
 		jpnMurs.repaint();
+	}
+	
+	public void ajoutJLabelJeu(JLabel jLabel) {
+		this.jpnJeu.add(jLabel);
+		this.jpnJeu.repaint();
 	}
 }

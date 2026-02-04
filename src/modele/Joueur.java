@@ -1,5 +1,14 @@
 package modele;
 
+import java.awt.Font;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
 import controleur.Global;
 /**
  * Gestion des joueurs
@@ -36,31 +45,57 @@ public class Joueur extends Objet implements Global {
 	*/
 	private int orientation ;
 	
+	private JLabel message;
+	
 	/**
 	 * Constructeur
 	 */
-	public Joueur() {
+	public Joueur(JeuServeur serveur) {
+		this.jeuServeur = serveur;
+		this.vie = MAXVIE;
+		this.etape = 1;
+		this.orientation = DROITE;
 	}
 
 	/**
 	 * Initialisation d'un joueur (pseudo et numéro, calcul de la 1ère position, affichage, création de la boule)
 	 */
-	public void initPerso(String pseudo, int numPerso) {
+	public void initPerso(String pseudo, int numPerso, Collection<Joueur> lesJoueurs, ArrayList<Mur> lesMurs) {
 		this.pseudo = pseudo;
 		this.numPerso = numPerso;
+		this.jLabel = new JLabel();
+		this.message = new JLabel();
+		this.message.setHorizontalAlignment(SwingConstants.CENTER);
+		this.message.setFont(new Font("Dialog", Font.PLAIN, 8));
+		this.premierePosition(lesMurs, lesJoueurs);
+		this.jeuServeur.ajoutJLabelJeuArene(jLabel);
+		this.jeuServeur.ajoutJLabelJeuArene(message);
+		this.affiche(MARCHE, etape);
 		System.out.println("joueur "+pseudo+" - num perso "+numPerso+" créé");
 	}
 
 	/**
 	 * Calcul de la première position aléatoire du joueur (sans chevaucher un autre joueur ou un mur)
 	 */
-	private void premierePosition() {
+	private void premierePosition(ArrayList<Mur> lesMurs, Collection<Joueur> lesJoueurs) {
+		jLabel.setBounds(0, 0, LARGEURPERSO, HAUTEURPERSO);
+		do {
+			posX = (int) Math.round(Math.random() * (LARGEURARENE - LARGEURPERSO));
+			posY = (int) Math.round(Math.random() * (HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE));
+		}while(this.toucheJoueur(lesJoueurs) || this.toucheMur(lesMurs));
 	}
 	
 	/**
 	 * Affiche le personnage et son message
 	 */
-	public void affiche() {
+	public void affiche(String etat, int etape) {
+		super.jLabel.setBounds(posX, posY, LARGEURPERSO, HAUTEURPERSO);
+		String chemin = CHEMINPERSONNAGES + PERSO + this.numPerso + etat + etape + "d" + this.orientation + EXTFICHIERPERSO;
+		URL resource = getClass().getClassLoader().getResource(chemin);
+		super.jLabel.setIcon(new ImageIcon(resource));
+		this.message.setBounds(posX-MARGEMESSAGE, posY+HAUTEURPERSO, LARGEURPERSO+MARGEMESSAGE, HAUTEURMESSAGE);
+		this.message.setText(pseudo+" : "+vie);
+		this.jeuServeur.envoiJeuATous();
 	}
 
 	/**
@@ -79,8 +114,15 @@ public class Joueur extends Objet implements Global {
 	 * Contrôle si le joueur touche un des autres joueurs
 	 * @return true si deux joueurs se touchent
 	 */
-	private Boolean toucheJoueur() {
-		return null;
+	private Boolean toucheJoueur(Collection<Joueur> lesJoueurs) {
+		for(Joueur unJoueur : lesJoueurs) {
+			if(!this.equals(unJoueur)) {
+				if(this.toucheObjet(unJoueur)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -99,8 +141,13 @@ public class Joueur extends Objet implements Global {
 	* Contrôle si le joueur touche un des murs
 	* @return true si un joueur touche un mur
 	*/
-	private Boolean toucheMur() {
-		return null;
+	private Boolean toucheMur(ArrayList<Mur> lesMurs) {
+		for(Mur unMur : lesMurs) {
+			if(this.toucheObjet(unMur)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import modele.Jeu;
@@ -94,12 +95,18 @@ public class Controle implements AsyncResponse, Global {
 			frmArene.ajoutMurs(info);
 		} else if (ordre == AJOUTPANELMURS) {
 			this.leJeu.envoi((Connection)info, this.frmArene.getJpnMurs());
+		} else if (ordre == AJOUTJLABELJEU) {
+			this.frmArene.ajoutJLabelJeu((JLabel) info);
+		} else if (ordre == MODIFPANELJEU) {
+			this.leJeu.envoi((Connection) info, this.frmArene.getJpnJeu());
 		}
 	}
 	
 	public void evenementJeuClient(String ordre, Object info) {
 		if (ordre == AJOUTPANELMURS) {
 			this.frmArene.setJpnMurs((JPanel)info);
+		} else if (ordre == MODIFPANELJEU) {
+			this.frmArene.setJpnJeu((JPanel)info);
 		}
 	}
 
