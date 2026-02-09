@@ -130,4 +130,10 @@ public interface Global {
 	String MODIFTCHAT = "modif tchat";
 	
 	String CLIENT = "client";
+	
+	String ACTION = "action";
+	
+	int UNPAS = 10;
+	
+	int NBETAPESMARCHE = 4;
 }
