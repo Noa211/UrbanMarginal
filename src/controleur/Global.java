@@ -122,4 +122,12 @@ public interface Global {
 	int DROITE = 1;
 	
 	String MODIFPANELJEU = "modif panel jeu";
+	
+	String TCHAT = "tchat";
+	
+	String AJOUTPHRASE = "ajout phrase";
+	
+	String MODIFTCHAT = "modif tchat";
+	
+	String CLIENT = "client";
 }

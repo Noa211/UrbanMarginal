@@ -20,6 +20,9 @@ public class Joueur extends Objet implements Global {
 	 * pseudo saisi
 	 */
 	private String pseudo ;
+	public String getPseudo() {
+		return this.pseudo;
+	}
 	/**
 	 * n° correspondant au personnage (avatar) pour le fichier correspondant
 	 */

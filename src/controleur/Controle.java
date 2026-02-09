@@ -42,7 +42,7 @@ public class Controle implements AsyncResponse, Global {
 	public void evenementEntreeJeu(String info) {
 		
 		if(info == SERVEUR) {
-			this.frmArene = new Arene();
+			this.frmArene = new Arene(this, SERVEUR);
 			this.leJeu = new JeuServeur(this);
 			((JeuServeur)this.leJeu).constructionMurs();
 			this.frmArene.setVisible(true);
@@ -67,7 +67,7 @@ public class Controle implements AsyncResponse, Global {
 			case CONNEXION:
 				if(!(this.leJeu instanceof JeuServeur)) {
 					this.frmChoixJoueur = new ChoixJoueur(this);
-					this.frmArene = new Arene();
+					this.frmArene = new Arene(this, CLIENT);
 					this.frmChoixJoueur.setVisible(true);
 					this.frmEntreeJeu.dispose();
 					this.leJeu = new JeuClient(this);
@@ -99,6 +99,9 @@ public class Controle implements AsyncResponse, Global {
 			this.frmArene.ajoutJLabelJeu((JLabel) info);
 		} else if (ordre == MODIFPANELJEU) {
 			this.leJeu.envoi((Connection) info, this.frmArene.getJpnJeu());
+		} else if (ordre == AJOUTPHRASE) {
+			this.frmArene.ajoutTchat((String)info);
+			((JeuServeur)leJeu).envoi(this.frmArene.getTxtChat());
 		}
 	}
 	
@@ -107,7 +110,13 @@ public class Controle implements AsyncResponse, Global {
 			this.frmArene.setJpnMurs((JPanel)info);
 		} else if (ordre == MODIFPANELJEU) {
 			this.frmArene.setJpnJeu((JPanel)info);
+		} else if (ordre == MODIFTCHAT) {
+			this.frmArene.setTxtChat((String)info);
 		}
+	}
+	
+	public void evenementArene(String info) {
+		((JeuClient)leJeu).envoi(TCHAT+STRINGSEPARE+info);
 	}
 
 }
