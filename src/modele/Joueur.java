@@ -48,6 +48,9 @@ public class Joueur extends Objet implements Global {
 	* tourné vers la gauche (0) ou vers la droite (1)
 	*/
 	private int orientation ;
+	public int getOrientation() {
+		return this.orientation;
+	}
 	
 	private JLabel message;
 	
@@ -69,11 +72,13 @@ public class Joueur extends Objet implements Global {
 		this.numPerso = numPerso;
 		this.jLabel = new JLabel();
 		this.message = new JLabel();
+		this.boule = new Boule(this.jeuServeur);
 		this.message.setHorizontalAlignment(SwingConstants.CENTER);
 		this.message.setFont(new Font("Dialog", Font.PLAIN, 8));
 		this.premierePosition(lesMurs, lesJoueurs);
 		this.jeuServeur.ajoutJLabelJeuArene(jLabel);
 		this.jeuServeur.ajoutJLabelJeuArene(message);
+		this.jeuServeur.ajoutJLabelJeuArene(this.boule.getjLabel());
 		this.affiche(MARCHE, etape);
 		System.out.println("joueur "+pseudo+" - num perso "+numPerso+" créé");
 	}
@@ -120,6 +125,11 @@ public class Joueur extends Objet implements Global {
 			case KeyEvent.VK_RIGHT:
 				orientation = DROITE;
 				posX = deplace(posX, action, UNPAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
+				break;
+			case KeyEvent.VK_SPACE:
+				if(!this.boule.getjLabel().isVisible()) {
+					this.boule.tireBoule(this, lesMurs);
+				}
 				break;
 		}
 		this.affiche(MARCHE, this.etape);
@@ -170,12 +180,14 @@ public class Joueur extends Objet implements Global {
 	 * Gain de points de vie après avoir touché un joueur
 	 */
 	public void gainVie() {
+		this.vie += GAIN;
 	}
 	
 	/**
 	 * Perte de points de vie après avoir été touché 
 	 */
 	public void perteVie() {
+		this.vie = Math.max(0, this.vie - PERTE);
 	}
 	
 	/**
@@ -196,7 +208,7 @@ public class Joueur extends Objet implements Global {
 	 * @return true si vie = 0
 	 */
 	public Boolean estMort() {
-		return null;
+		return vie == 0;
 	}
 	
 	/**

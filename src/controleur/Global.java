@@ -136,4 +136,18 @@ public interface Global {
 	int UNPAS = 10;
 	
 	int NBETAPESMARCHE = 4;
+	
+	String CHEMINBOULES = "boules"+CHEMINSEPARATOR;
+	String BOULE = CHEMINBOULES+"boule.gif";
+	int LARGEURBOULE = 17;
+	int HAUTEURBOULE = 17;
+	
+	/**
+	 * nombre d'étapes (d'images) pour donner l'impression d'être touché
+	 */
+	int NBETAPESTOUCHE = 2;
+	/**
+	 * nombre d'étapes (d'images) pour donner l'impresson de mourir
+	 */
+	int NBETAPESMORT = 2;
 }
