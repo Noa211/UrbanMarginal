@@ -112,6 +112,8 @@ public class Controle implements AsyncResponse, Global {
 			this.frmArene.setJpnJeu((JPanel)info);
 		} else if (ordre == MODIFTCHAT) {
 			this.frmArene.setTxtChat((String)info);
+		} else if (ordre == JOUESON) {
+			this.frmArene.joueSon((int)info);
 		}
 	}
 	

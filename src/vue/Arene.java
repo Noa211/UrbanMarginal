@@ -16,6 +16,8 @@ import javax.swing.JTextArea;
 
 import controleur.Controle;
 import controleur.Global;
+import outils.son.Son;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -26,6 +28,8 @@ public class Arene extends JFrame implements Global {
 	private JTextField txtSaisie;
 	private Controle controle;
 	private boolean client;
+	
+	private Son[] lesSons = new Son[SON.length];
 	
 	private JPanel jpnMurs;
 	public JPanel getJpnMurs() {
@@ -127,6 +131,12 @@ public class Arene extends JFrame implements Global {
 		txtChat.setEditable(false);
 		jspChat.setViewportView(txtChat);
 		
+		if (client) {
+			for (int k=0 ; k<SON.length ; k++) {
+				lesSons[k] = new Son(getClass().getClassLoader().getResource(SON[k])) ;
+			}
+		}
+		
 		this.controle = controle;
 	}
 	
@@ -177,5 +187,9 @@ public class Arene extends JFrame implements Global {
 		if (touche != -1) {
 			controle.evenementArene(touche);
 		}
+	}
+	
+	public void joueSon(int numSon) {
+		this.lesSons[numSon].play();
 	}
 }

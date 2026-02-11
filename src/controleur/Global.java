@@ -150,4 +150,22 @@ public interface Global {
 	 * nombre d'étapes (d'images) pour donner l'impresson de mourir
 	 */
 	int NBETAPESMORT = 2;
+	
+	String CHEMINSONS = "sons"+CHEMINSEPARATOR;
+	String SONWELCOME = CHEMINSONS+"welcome.wav";
+	String SONPRECEDENT = CHEMINSONS+"precedent.wav";
+	String SONSUIVANT = CHEMINSONS+"suivant.wav";
+	String SONGO = CHEMINSONS+"go.wav";
+	
+	String SONFIGHT = CHEMINSONS+"fight.wav";
+	String SONHURT = CHEMINSONS+"hurt.wav";
+	String SONDEATH = CHEMINSONS+"death.wav";
+	
+	String[] SON = {SONFIGHT, SONHURT, SONDEATH};
+	
+	String JOUESON = "joue son";
+	
+	int FIGHT = 0;
+	int HURT = 1;
+	int DEATH = 2;
 }
