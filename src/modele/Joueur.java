@@ -111,28 +111,30 @@ public class Joueur extends Objet implements Global {
 	 * Gère une action reçue et qu'il faut afficher (déplacement, tire de boule...)
 	 */
 	public void action(int action, Collection<Joueur> lesJoueurs, ArrayList<Mur> lesMurs) {
-		switch (action) {
-			case KeyEvent.VK_UP:
-				posY = deplace(posY, action, -UNPAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs);
-				break;
-			case KeyEvent.VK_DOWN:
-				posY = deplace(posY, action, UNPAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs);
-				break;
-			case KeyEvent.VK_LEFT:
-				orientation = GAUCHE;
-				posX = deplace(posX, action, -UNPAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
-				break;
-			case KeyEvent.VK_RIGHT:
-				orientation = DROITE;
-				posX = deplace(posX, action, UNPAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
-				break;
-			case KeyEvent.VK_SPACE:
-				if(!this.boule.getjLabel().isVisible()) {
-					this.boule.tireBoule(this, lesMurs);
-				}
-				break;
+		if (!this.estMort()) {
+			switch (action) {
+				case KeyEvent.VK_UP:
+					posY = deplace(posY, action, -UNPAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs);
+					break;
+				case KeyEvent.VK_DOWN:
+					posY = deplace(posY, action, UNPAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs);
+					break;
+				case KeyEvent.VK_LEFT:
+					orientation = GAUCHE;
+					posX = deplace(posX, action, -UNPAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
+					break;
+				case KeyEvent.VK_RIGHT:
+					orientation = DROITE;
+					posX = deplace(posX, action, UNPAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
+					break;
+				case KeyEvent.VK_SPACE:
+					if(!this.boule.getjLabel().isVisible()) {
+						this.boule.tireBoule(this, lesMurs);
+					}
+					break;
+			}
+			this.affiche(MARCHE, this.etape);
 		}
-		this.affiche(MARCHE, this.etape);
 	}
 
 	/**
@@ -181,6 +183,7 @@ public class Joueur extends Objet implements Global {
 	 */
 	public void gainVie() {
 		this.vie += GAIN;
+		affiche(MARCHE, etape);
 	}
 	
 	/**
@@ -188,6 +191,7 @@ public class Joueur extends Objet implements Global {
 	 */
 	public void perteVie() {
 		this.vie = Math.max(0, this.vie - PERTE);
+		affiche(MARCHE, etape);
 	}
 	
 	/**
@@ -215,6 +219,12 @@ public class Joueur extends Objet implements Global {
 	 * Le joueur se déconnecte et disparait
 	 */
 	public void departJoueur() {
+		if (super.jLabel != null) {
+			super.jLabel.setVisible(false);
+			this.message.setVisible(false);
+			this.boule.getjLabel().setVisible(false);
+			this.jeuServeur.envoiJeuATous();
+		}
 	}
 	
 }

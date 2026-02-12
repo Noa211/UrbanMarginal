@@ -26,6 +26,14 @@ public abstract class Objet {
 		return this.posY;
 	}
 	
+	public void setPosX(Integer posX) {
+		this.posX = posX;
+	}
+
+	public void setPosY(Integer posY) {
+		this.posY = posY;
+	}
+	
 	protected JLabel jLabel;
 	
 	public JLabel getjLabel() {
